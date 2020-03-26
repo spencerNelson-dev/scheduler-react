@@ -7,7 +7,7 @@ function Home(props) {
 
     const onClickHanlder = () => {
 
-        if(view == 'list'){
+        if(view === 'list'){
             setView('calendar')
         } else {
             setView('list')
@@ -16,10 +16,10 @@ function Home(props) {
 
     return (
         <div>
-            <button on onClick={onClickHanlder}>CHANGE VIEW</button>
+            <button onClick={onClickHanlder}>CHANGE VIEW</button>
             <div>
                 {
-                    view == 'list' ? (
+                    view === 'list' ? (
                         <EventListView></EventListView>
                     ) : (
                             <EventCalendar></EventCalendar>

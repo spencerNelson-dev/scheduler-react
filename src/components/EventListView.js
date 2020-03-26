@@ -1,7 +1,7 @@
 import React from 'react';
 import MaterialTable from 'material-table'
 import { forwardRef } from 'react';
-import {uriBase, eventsApi} from '../const'
+import { uriBase, eventsApi } from '../const'
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
@@ -40,10 +40,10 @@ function EventListView(props) {
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
     };
 
-   const [events, setEvents] = React.useState([])
+    const [events, setEvents] = React.useState([])
 
     // the state for the table
-    const [state, setState] = React.useState({
+    const [state] = React.useState({
         columns: [
             { title: 'Name', field: 'name' },
             { title: 'Description', field: 'description' },
@@ -51,8 +51,18 @@ function EventListView(props) {
             {
                 title: 'Type',
                 field: 'type',
+                lookup: {
+                    Appointment: "Appointment",
+                    Meeting: "Meeting",
+                    Reminder: "Reminder",
+                    Game: "Game",
+                    Movie: "Movie",
+                    Concert: "Concert",
+                    Meetup: "Meetup",
+                    Other: "Other"
+                }
             },
-            {title: 'ID', field: '_id', hidden: true}
+            { title: 'ID', field: '_id', hidden: true }
         ],
         data: []
     });
@@ -65,19 +75,19 @@ function EventListView(props) {
                 "Content-Type": "application/json"
             }
         })
-        .then(httpResult => {
-            if(!httpResult.ok){
-                throw new Error("Failed to get all events")
-            }
-            return httpResult.json()
-        })
-        .then(events => {
-            console.log(events)
-            setEvents(events)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .then(httpResult => {
+                if (!httpResult.ok) {
+                    throw new Error("Failed to get all events")
+                }
+                return httpResult.json()
+            })
+            .then(events => {
+                console.log(events)
+                setEvents(events)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     const addEventToDb = (newEvent) => {
@@ -89,16 +99,16 @@ function EventListView(props) {
             },
             body: JSON.stringify(newEvent)
         })
-        .then(httpResult => {
-            if(!httpResult.ok){
-                throw new Error("Could not create user")
-            }
+            .then(httpResult => {
+                if (!httpResult.ok) {
+                    throw new Error("Could not create user")
+                }
 
-            return httpResult.json()
-        })
-        .catch(error => {
-            console.log(error)
-        })
+                return httpResult.json()
+            })
+            .catch(error => {
+                console.log(error)
+            })
 
     }
 
@@ -111,16 +121,16 @@ function EventListView(props) {
             },
             body: JSON.stringify(updatedEvent)
         })
-        .then(httpResult => {
-            if(!httpResult.ok){
-                throw new Error("Could not update user")
-            }
+            .then(httpResult => {
+                if (!httpResult.ok) {
+                    throw new Error("Could not update user")
+                }
 
-            return httpResult.json()
-        })
-        .catch(error => {
-            console.log(error)
-        })
+                return httpResult.json()
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     const dbDeleteEvent = (deleteEvent) => {
@@ -128,25 +138,25 @@ function EventListView(props) {
         fetch(`${uriBase}${eventsApi}/delete/${deleteEvent.id}`, {
             method: "DELETE",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type": "application/json"
             }
         })
-        .then(httpResult => {
-            if(!httpResult.ok){
-                throw new Error("Could not delete user")
-            }
+            .then(httpResult => {
+                if (!httpResult.ok) {
+                    throw new Error("Could not delete user")
+                }
 
-            return httpResult.json()
-        })
-        .catch(error => {
-            console.log(error)
-        })
+                return httpResult.json()
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
 
     React.useEffect(() => {
         getEvents()
-    },[])
+    }, [])
 
     return (
         <MaterialTable
@@ -155,7 +165,7 @@ function EventListView(props) {
             columns={state.columns}
             data={events}
             editable={{
-                onRowAdd: newData =>{
+                onRowAdd: newData => {
                     return new Promise(resolve => {
                         setTimeout(() => {
                             resolve();
@@ -166,7 +176,8 @@ function EventListView(props) {
                                 return data
                             })
                         }, 600);
-                    })},
+                    })
+                },
                 onRowUpdate: (newData, oldData) =>
                     new Promise(resolve => {
                         setTimeout(() => {

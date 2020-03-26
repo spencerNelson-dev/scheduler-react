@@ -2,6 +2,7 @@ import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import { uriBase, eventsApi } from '../const'
+import EventModel from './EventModel'
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -42,7 +43,10 @@ const localizer = momentLocalizer(moment)
 
 function EventCalendar(props) {
 
-    const [events, setEvents] = React.useState(DUMMY_DATA)
+    const [events, setEvents] = React.useState([])
+    const [event, setEvent] = React.useState({})
+    const [dbEvents, setDbEvents] = React.useState([])
+    const [openModel,setOpenModel] = React.useState(false)
 
     const getEvents = () => {
 
@@ -59,6 +63,7 @@ function EventCalendar(props) {
                 return httpResult.json()
             })
             .then(events => {
+                setDbEvents(events)
                 return events
             })
             .catch(error => {
@@ -69,27 +74,26 @@ function EventCalendar(props) {
     const mapEventsToCalendar = async () => {
 
         let dbEvents = await getEvents()
-
-        console.log(dbEvents);
-        
-
+    
         let calEvents = dbEvents.reduce((acc, value) => {
 
-            console.log("acc",acc)
-            let calEvent = {
-                title: value.name,
-                start: value.date,
-                end: value.date
-            }
+            value.title = value.name
+            value.start = value.date
+            value.end = value.date
 
-            acc.push(calEvent)
+            acc.push(value)
 
             return acc
         },[])
 
-        console.log(calEvents)
         setEvents(calEvents)
 
+    }
+
+    const onEventSelect = (event) => {
+
+        setEvent(event)
+        setOpenModel(!openModel)
     }
 
     React.useEffect(() => {
@@ -105,8 +109,12 @@ function EventCalendar(props) {
                 events={events}
                 style={{ height: "100vh" }}
                 views={['month']}
+                onSelectEvent={onEventSelect}
 
             />
+            {
+                openModel ? <EventModel open={openModel} setOpen={setOpenModel} event={event}></EventModel> : null
+            }
         </div>
     );
 }

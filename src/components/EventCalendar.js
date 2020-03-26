@@ -50,7 +50,7 @@ function EventCalendar(props) {
 
     const getEvents = () => {
 
-        return fetch(`${uriBase}${eventsApi}/all`, {
+        return fetch(`${eventsApi}/all`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

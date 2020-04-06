@@ -69,7 +69,7 @@ function EventListView(props) {
 
     const getEvents = () => {
 
-        fetch(`${eventsApi}/all`, {
+        fetch(`${uriBase}${eventsApi}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -92,7 +92,7 @@ function EventListView(props) {
 
     const addEventToDb = (newEvent) => {
 
-        fetch(`${eventsApi}/new`, {
+        fetch(`${uriBase}${eventsApi}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -114,7 +114,7 @@ function EventListView(props) {
 
     const dbUpdateEvent = (updatedEvent) => {
 
-        fetch(`${eventsApi}/update/${updatedEvent.id}`, {
+        fetch(`${uriBase}${eventsApi}/${updatedEvent.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -135,7 +135,7 @@ function EventListView(props) {
 
     const dbDeleteEvent = (deleteEvent) => {
 
-        fetch(`${eventsApi}/delete/${deleteEvent.id}`, {
+        fetch(`${uriBase}${eventsApi}/${deleteEvent.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"

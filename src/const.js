@@ -2,7 +2,7 @@
 const uriBase = process.env.NODE_ENV !== 'production' ? (
     "http://localhost:3001"
 ) : (
-    "https://spencer-nelson.herokuapp.com"
+    "https://spencernelson.herokuapp.com"
 )
 
 const eventsApi = "/scheduler/api/v1/events"

@@ -79,6 +79,7 @@ function EventListView(props) {
                 if (!httpResult.ok) {
                     throw new Error("Failed to get all events")
                 }
+
                 return httpResult.json()
             })
             .then(events => {
